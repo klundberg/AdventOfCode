@@ -5,8 +5,7 @@ import Foundation
 // See Sources/Passphrases.swift for input variable `passphrases`
 
 func isValidPhrase(_ phrase: [String]) -> Bool {
-    let set = Set(phrase)
-    return set.count == phrase.count
+    return Set(phrase).count == phrase.count
 }
 
 func validPhrases(in list: [[String]]) -> [[String]] {
@@ -16,12 +15,9 @@ func validPhrases(in list: [[String]]) -> [[String]] {
 validPhrases(in: passphrases).count
 
 //: Part 2
-
-func sortedLettersInWords(in phrases: [[String]]) -> [[String]] {
-    return phrases.map({ phrase in
-        phrase.map({ word in
-            String(word.sorted())
-        })
+func sortedLettersInWords(in list: [[String]]) -> [[String]] {
+    return list.map({ phrase in
+        phrase.map({ String($0.sorted()) })
     })
 }
 
