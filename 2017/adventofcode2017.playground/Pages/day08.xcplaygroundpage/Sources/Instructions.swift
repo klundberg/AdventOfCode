@@ -1,6 +1,6 @@
 import Foundation
 
-let input = """
+public let input = """
 a dec -511 if x >= -4
 pq inc -45 if cfa == 7
 vby dec 69 if tl < 1
