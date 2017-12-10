@@ -60,86 +60,65 @@ stepsToAccessPoint(1024)
 stepsToAccessPoint(289326)
 
 //: Part 2
-// This is unfinished, may revisit later
+// This is incredibly gross but it works
 
-func numbersAdjacentToNumber(at index: Int, in grid: [[Int]]) -> [Int] {
-    let layer = layerOfNumber(index)
-    let previousLayer = layer - 1
-    let position = positionAroundLayer(index)
-    let previousPosition = position - 1
-
-
-    return []
+func sumOfNumbers(in matrix: [[Int]], around point: (x: Int, y: Int)) -> Int {
+    return matrix[point.x + 1][point.y + 1]
+        +  matrix[point.x + 1][point.y]
+        +  matrix[point.x + 1][point.y - 1]
+        +  matrix[point.x]    [point.y - 1]
+        +  matrix[point.x]    [point.y + 1]
+        +  matrix[point.x - 1][point.y + 1]
+        +  matrix[point.x - 1][point.y]
+        +  matrix[point.x - 1][point.y - 1]
 }
 
-func firstLarger(_ input: Int) -> Int {
-    var grid: [[Int]] = []
+func firstLarger(than input: Int) -> Int {
+    let size = layerOfNumber(input) * 2 + 1
 
-    grid.insert([1], at: 0)
+    var matrix = Array(repeating: Array(repeating: 0, count: size), count: size)
+    let middleX = size / 2 + 1
+    let middleY = middleX
 
-    var index = 1
-    var currentNumber = 1
-    while currentNumber <= input {
-        let position = positionAroundLayer(index)
-        let layer = layerOfNumber(index)
+    matrix[middleX][middleY] = 1
+    var current = matrix[middleX][middleY]
+    var posX = middleX + 1
+    var posY = middleY
 
+    var layer = 1
+    while current < input {
+        let distance = layer * 2
+        // move up
+        for _ in 1...(distance-1) {
+            current = sumOfNumbers(in: matrix, around: (posX, posY))
+            matrix[posX][posY] = current
+            if current >= input { return current }
+            posY -= 1
+        }
+        // move left
+        for _ in 1...distance {
+            current = sumOfNumbers(in: matrix, around: (posX, posY))
+            matrix[posX][posY] = current
+            if current >= input { return current }
+            posX -= 1
+        }
+        // move down
+        for _ in 1...distance {
+            current = sumOfNumbers(in: matrix, around: (posX, posY))
+            matrix[posX][posY] = current
+            if current >= input { return current }
+            posY += 1
+        }
+        // move right
+        for _ in 1...(distance+1) {
+            current = sumOfNumbers(in: matrix, around: (posX, posY))
+            matrix[posX][posY] = current
+            if current >= input { return current }
+            posX += 1
+        }
+        layer += 1
     }
-
-    return currentNumber
+    return current
 }
 
-
-//firstLarger(289326)
-
-
-
-/*
- 147  142  133  122   59
- 304    5    4    2   57
- 330   10    1    1   54
- 351   11   23   25   26
- 362  747  806--->   ...
-
- indexes:          positions around each layer:
- 17 16 15 14 13    08 07 06 05 04
- 18 5  4  3  12    09 04 03 02 03
- 19 6  1  2  11    10 05 01 01 02
- 20 7  8  9  10    11 06 07 08 01
- 21 22 23 24 25    12 13 14 15 16
-
- if corner:
-   add numbers at (layer n, pos -1), (layer n-1, pos / 2), (layer n, pos+1 % layerSize)
- if side:
-   add numbers at (layer n, pos - 1), (layer n-1, pos /2,
-
- 1 = []
-
- 2 = [1]
- 3 = [1, 2]
- 4 = [1, 2, 3]
- 5 = [1, 4]
- 6 = [1, 4, 5]
- 7 = [1, 6]
- 8 = [1, 6, 7]
- 9 = [1, 8, 2]
-
- 10 = [9, 2]
- 11 = [9, 2, 3, 10]
- 12 = [2, 3, 11]
- 13 = [3, 12]
- 14 = [3, 12, 13]
- 15 = [3, 4, 5, 14]
- 16 = [4, 5, 15]
- 17 = [5, 16]
- ...
-
-1
-1  2  4  5  10 11 23 25
-0  1  3  4  9  10 22 24
-
- 26 54 57 59 122 133 142 147 304 330 351 362 747 806 831 857
-
- */
-
-
-
+firstLarger(than: 289326)
