@@ -20,12 +20,10 @@ struct Instruction {
 }
 
 func operation(for token: Substring) -> (Int, Int) -> Int {
-    if token == "dec" {
-        return (-)
-    } else if token == "inc" {
-        return (+)
-    } else {
-        fatalError()
+    switch token {
+    case "dec": return (-)
+    case "inc": return (+)
+    default: fatalError()
     }
 }
 
