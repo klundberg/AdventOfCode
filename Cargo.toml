@@ -1,6 +1,7 @@
 [package]
-name = "aoc2018"
+name = "aoc"
 version = "0.1.0"
 authors = ["Kevin Lundberg <kevin@klundberg.com>"]
 
 [dependencies]
+edit-distance = "2.0.0"
